@@ -73,7 +73,6 @@ export async function loadScript(
   let bootstrap: PromiseFn[] = []
   let unmount: PromiseFn[] = []
   let mount: PromiseFn[] = []
-  console.log(scriptsToLoad)
   scriptsToLoad.forEach((script) => {
     const lifecycles = run(script, {})[name]
     if (lifecycles) {

@@ -1,6 +1,10 @@
 import type { App } from './types'
 
-export function loadShadowDOM(app: App): Promise<DocumentFragment> {
+export function loadShadowDOM(
+  app: App,
+  bodyNode: HTMLTemplateElement,
+  styleNodes: HTMLStyleElement[]
+): Promise<DocumentFragment> {
   return new Promise((resolve) => {
     class SFMIC extends HTMLElement {
       static get tag(): string {
@@ -8,7 +12,14 @@ export function loadShadowDOM(app: App): Promise<DocumentFragment> {
       }
       constructor() {
         super()
-        resolve(this.attachShadow({ mode: 'open' }))
+        app.host = this.attachShadow({ mode: 'open' })
+        app.host.appendChild(bodyNode.content.cloneNode(true))
+        Array.from(styleNodes)
+          .reverse()
+          .map((k) => {
+            app.host!.insertBefore(k, app.host!.firstChild)
+          })
+        resolve(app.host)
       }
     }
     const hasDef = window.customElements.get(app.name)

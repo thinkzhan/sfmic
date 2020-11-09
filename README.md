@@ -22,7 +22,10 @@ import { register, start } from 'sfmic'
 register(
   'one-app',
   'http://localhost:3000/one.html',
-  (location) => location.hash === '#/app1'
+  (location) => location.hash === '#/app1',
+  {
+    prop1: 'props'
+  }
 )
 register(
   'two-app',
@@ -30,6 +33,22 @@ register(
   (location) => location.hash === '#/app2'
 )
 start()
+```
+
+### child
+```js
+export async function bootstrap() {
+}
+
+export async function mount({ host, props}) {
+}
+
+export async function unmount({ host }) {
+}
+
+if (!window.IS_SFMIC_SANDBOX) {
+  // mount
+}
 ```
 
 ### mixins

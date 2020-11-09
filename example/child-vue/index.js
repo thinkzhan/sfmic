@@ -4,9 +4,9 @@ import router from './router'
 
 let mountEl = null
 window.test = 'vue'
-console.log('sandbox: ', window.test)
+console.log('sandbox: ' + window.test)
 
-if (!window.IS_BERIAL_SANDBOX) {
+if (!window.IS_SFMIC_SANDBOX) {
   const appNode = document
     .querySelector('#root')
     .appendChild(document.createElement('div'))

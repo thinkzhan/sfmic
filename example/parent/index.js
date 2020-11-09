@@ -27,7 +27,10 @@ mixin({
 register(
   'child-react',
   isProduction ? '' : 'http://localhost:3002',
-  (location) => /^\/react/.test(location.pathname)
+  (location) => /^\/react/.test(location.pathname),
+  {
+    state: 66
+  }
 )
 
 register('child-vue', isProduction ? '' : 'http://localhost:3003', (location) =>

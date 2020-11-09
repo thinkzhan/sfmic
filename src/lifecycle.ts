@@ -8,24 +8,29 @@ import { lifecycleCheck, compose } from './util'
 let started = false
 const apps: any = new Set()
 
-export function register(name: string, url: string, match: any): void {
+export function register(
+  name: string,
+  url: string,
+  match: any,
+  props: Record<string, unknown>
+): void {
   apps.add({
     name,
     url,
     match,
+    props,
     status: Status.NOT_LOADED
   })
 }
+historyChange(reroute)
 
 export function start(): void {
   started = true
-  historyChange(reroute)
   reroute()
 }
 
 function reroute(): Promise<void> {
   const { loads, mounts, unmounts } = getAppsByStatus()
-
   return started ? update() : init()
 
   async function init(): Promise<void> {
@@ -81,15 +86,11 @@ async function runLoad(app: App): Promise<any> {
   app.loaded = Promise.resolve().then(async () => {
     app.status = Status.LOADING
     let mixinLife = getMixin()
-    app.host = await loadShadowDOM(app)
     const { lifecycle: selfLife, bodyNode, styleNodes } = await loadHtml(app)
     lifecycleCheck(selfLife)
-    app.host?.appendChild(bodyNode.content.cloneNode(true))
-    Array.from(styleNodes)
-      .reverse()
-      .map((k) => {
-        app.host!.insertBefore(k, app.host!.firstChild)
-      })
+    if (!app.host) {
+      app.host = await loadShadowDOM(app, bodyNode, styleNodes)
+    }
     app.status = Status.NOT_BOOTSTRAPPED
     app.bootstrap = compose(mixinLife.bootstrap.concat(selfLife.bootstrap))
     app.mount = compose(mixinLife.mount.concat(selfLife.mount))

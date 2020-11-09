@@ -26,7 +26,7 @@ export function run(code: string, options: any = {}): any {
       }
 
       const allowList = {
-        IS_BERIAL_SANDBOX: true,
+        IS_SFMIC_SANDBOX: true,
         __proto__: null,
         console,
         String,
@@ -74,7 +74,7 @@ export function run(code: string, options: any = {}): any {
           return run('return ' + code, {})
         },
         alert: function (): void {
-          alert('Sandboxed alert:' + arguments[0])
+          alert(arguments[0])
         },
         // position related properties
         innerHeight,
