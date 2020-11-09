@@ -1,4 +1,4 @@
-import { App, Status } from './types'
+import { App, Status, registerFn } from './types'
 import { getMixin } from './mixin'
 import { loadHtml } from './loader'
 import { loadShadowDOM } from './shadowdom'
@@ -7,22 +7,29 @@ import { lifecycleCheck, compose } from './util'
 
 let started = false
 const apps: any = new Set()
+historyChange(reroute)
 
 export function register(
   name: string,
   url: string,
   match: any,
   props: Record<string, unknown>
-): void {
-  apps.add({
+): registerFn {
+  const app = {
     name,
     url,
     match,
     props,
-    status: Status.NOT_LOADED
-  })
+    status: Status.NOT_LOADED,
+    webComponentName: name
+  }
+  apps.add(app)
+  return {
+    alias(webComponentName: string): void {
+      app.webComponentName = webComponentName
+    }
+  }
 }
-historyChange(reroute)
 
 export function start(): void {
   started = true
@@ -31,6 +38,7 @@ export function start(): void {
 
 function reroute(): Promise<void> {
   const { loads, mounts, unmounts } = getAppsByStatus()
+
   return started ? update() : init()
 
   async function init(): Promise<void> {

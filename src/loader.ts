@@ -43,7 +43,7 @@ const BODY_CONTENT_RE = /<\s*body[^>]*>([\w\W]*)<\s*\/body>/
 const SCRIPT_ANY_RE = /<\s*script[^>]*>[\s\S]*?(<\s*\/script[^>]*>)/g
 const TEST_URL = /^(?:https?):\/\/[-a-zA-Z0-9.]+/
 
-const REPLACED_BY_BERIAL = 'Script replaced by SFMIC.'
+const REPLACED_BY_SFMIC = 'Script replaced by SFMIC.'
 
 export async function loadHtml(
   app: App
@@ -152,8 +152,8 @@ function loadBody(template: string): HTMLTemplateElement {
   function scriptReplacer(substring: string): string {
     const matchedURL = SCRIPT_URL_RE.exec(substring)
     if (matchedURL) {
-      return `<!-- ${REPLACED_BY_BERIAL} Original script url: ${matchedURL[1]} -->`
+      return `<!-- ${REPLACED_BY_SFMIC} Original script url: ${matchedURL[1]} -->`
     }
-    return `<!-- ${REPLACED_BY_BERIAL} Original script: inline script -->`
+    return `<!-- ${REPLACED_BY_SFMIC} Original script: inline script -->`
   }
 }

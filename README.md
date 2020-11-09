@@ -32,12 +32,22 @@ register(
   'http://localhost:3000/two.html',
   (location) => location.hash === '#/app2'
 )
+// want to reuse the same app?
+register(
+  'two-app',
+  'http://localhost:3000/two.html',
+  (location) => location.hash === '#/app3'
+).alias('other-name')
+//
 start()
 ```
 
 ### child
 
 ```js
+// in vue, for webcomponents
+Vue.config.ignoredElements = ['one-app', 'two-app']
+
 export async function bootstrap() {}
 
 export async function mount({ host, props }) {}

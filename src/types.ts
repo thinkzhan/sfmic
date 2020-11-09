@@ -29,20 +29,25 @@ export type Mixin = {
 
 export type App = {
   name: string
-  url: ((props: App['props']) => Lifecycle) | string
+  url: string
   match: (location: Location) => boolean
   host: DocumentFragment
   props: Record<string, unknown>
   status: Status
   loaded?: any
-  store?: any
-  loadLifecycle: any
   unmount: PromiseFn
   mount: PromiseFn
   bootstrap: PromiseFn
+  webComponentName: string
+}
+
+export type registerKey = {
+  alias: string
 }
 
 export type PromiseFn = (...args: any[]) => Promise<any>
+
+export type registerFn = Record<keyof registerKey, (params: any) => void>
 
 export type ToArray<T> = T extends Record<any, any>
   ? {

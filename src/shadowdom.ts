@@ -22,9 +22,9 @@ export function loadShadowDOM(
         resolve(app.host)
       }
     }
-    const hasDef = window.customElements.get(app.name)
+    const hasDef = window.customElements.get(app.webComponentName)
     if (!hasDef) {
-      customElements.define(app.name, SFMIC)
+      customElements.define(app.webComponentName, SFMIC)
     }
   })
 }
