@@ -63,7 +63,7 @@ export async function loadScript(
   template: string,
   app: App
 ): Promise<Lifecycles> {
-  const { name, allowList } = app;
+  const { name, allowList } = app
   const scriptsToLoad = await Promise.all(
     parseScript(template).map((v: string) => {
       if (TEST_URL.test(v)) return request(v)
