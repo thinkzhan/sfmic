@@ -41,7 +41,7 @@ const CSS_URL_OR_STYLE_RE = new RegExp(
 )
 const BODY_CONTENT_RE = /<\s*body[^>]*>([\w\W]*)<\s*\/body>/
 const SCRIPT_ANY_RE = /<\s*script[^>]*>[\s\S]*?(<\s*\/script[^>]*>)/g
-const TEST_URL = /^(?:https?):\/\/[-a-zA-Z0-9.]+/
+const TEST_URL = /^((?:https?):)?\/\/[-a-zA-Z0-9.]+/
 
 const REPLACED_BY_SFMIC = 'Script replaced by SFMIC.'
 
@@ -55,14 +55,15 @@ export async function loadHtml(
   const template = await request(app.url as string)
   const styleNodes = await loadCSS(template)
   const bodyNode = loadBody(template)
-  const lifecycle = await loadScript(template, app.name)
+  const lifecycle = await loadScript(template, app)
   return { lifecycle, styleNodes, bodyNode }
 }
 
 export async function loadScript(
   template: string,
-  name: string
+  app: App
 ): Promise<Lifecycles> {
+  const { name, allowList } = app;
   const scriptsToLoad = await Promise.all(
     parseScript(template).map((v: string) => {
       if (TEST_URL.test(v)) return request(v)
@@ -74,7 +75,7 @@ export async function loadScript(
   let unmount: PromiseFn[] = []
   let mount: PromiseFn[] = []
   scriptsToLoad.forEach((script) => {
-    const lifecycles = run(script, {})[name]
+    const lifecycles = run(script, { allowList })[name]
     if (lifecycles) {
       bootstrap = [...bootstrap, lifecycles.bootstrap]
       mount = [...mount, lifecycles.mount]

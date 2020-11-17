@@ -51,6 +51,7 @@ export function run(code: string, options: any = {}): any {
         SVGElement,
         HTMLElement,
         Element,
+        HTMLDivElement,
         HTMLIFrameElement,
         history,
         isNaN,

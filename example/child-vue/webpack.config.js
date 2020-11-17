@@ -13,7 +13,7 @@ module.exports = {
     umdNamedDefine: true,
     publicPath:
       process.env.NODE_ENV === 'production'
-        ? 'https://sfmic-child-vue.vercel.app'
+        ? ''
         : 'http://localhost:3003'
   },
   module: {

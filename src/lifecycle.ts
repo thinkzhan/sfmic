@@ -21,12 +21,18 @@ export function register(
     match,
     props,
     status: Status.NOT_LOADED,
-    webComponentName: name
+    webComponentName: name,
+    allowList: {}
   }
   apps.add(app)
   return {
-    alias(webComponentName: string): void {
+    alias: function (webComponentName: string): any {
       app.webComponentName = webComponentName
+      return this
+    },
+    allowList: function (allowList: Record<any, any>): any {
+      app.allowList = allowList
+      return this
     }
   }
 }

@@ -35,6 +35,7 @@ export type App = {
   props: Record<string, unknown>
   status: Status
   loaded?: any
+  allowList?: Record<any, any>
   unmount: PromiseFn
   mount: PromiseFn
   bootstrap: PromiseFn
@@ -43,6 +44,7 @@ export type App = {
 
 export type registerKey = {
   alias: string
+  allowList: string
 }
 
 export type PromiseFn = (...args: any[]) => Promise<any>
