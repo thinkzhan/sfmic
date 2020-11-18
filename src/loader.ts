@@ -74,14 +74,21 @@ export async function loadScript(
   let bootstrap: PromiseFn[] = []
   let unmount: PromiseFn[] = []
   let mount: PromiseFn[] = []
+  let scripts = ''
+
   scriptsToLoad.forEach((script) => {
-    const lifecycles = run(script, { allowList })[name]
-    if (lifecycles) {
-      bootstrap = [...bootstrap, lifecycles.bootstrap]
-      mount = [...mount, lifecycles.mount]
-      unmount = [...unmount, lifecycles.unmount]
-    }
+    scripts += `
+    ;${script}`
   })
+
+  const lifecycles = run(scripts, { allowList })[name]
+  if (lifecycles) {
+    bootstrap = lifecycles.bootstrap
+      ? [...bootstrap, lifecycles.bootstrap]
+      : bootstrap
+    mount = lifecycles.mount ? [...mount, lifecycles.mount] : mount
+    unmount = lifecycles.unmount ? [...unmount, lifecycles.unmount] : unmount
+  }
 
   return { bootstrap, unmount, mount }
 }

@@ -19,8 +19,9 @@ export function request(url: string, option?: RequestInit): Promise<string> {
 
 export function lifecycleCheck(lifecycle: Lifecycle | Lifecycles): void {
   const keys = ['bootstrap', 'mount', 'unmount']
-  keys.forEach((key) => {
-    if (!(key in lifecycle)) {
+  keys.forEach((key: any) => {
+    // @ts-ignore
+    if (!(key in lifecycle && lifecycle[key] && lifecycle[key].length)) {
       error(`It looks like that you didn't export the lifecycle hook [${key}].`)
     }
   })

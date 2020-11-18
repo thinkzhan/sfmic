@@ -40,11 +40,13 @@ export type App = {
   mount: PromiseFn
   bootstrap: PromiseFn
   webComponentName: string
+  fixReactEvent: boolean
 }
 
 export type registerKey = {
   alias: string
   allowList: string
+  fixReactEvent: string
 }
 
 export type PromiseFn = (...args: any[]) => Promise<any>

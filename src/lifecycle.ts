@@ -22,7 +22,8 @@ export function register(
     props,
     status: Status.NOT_LOADED,
     webComponentName: name,
-    allowList: {}
+    allowList: {},
+    fixReactEvent: false
   }
   apps.add(app)
   return {
@@ -32,6 +33,10 @@ export function register(
     },
     allowList: function (allowList: Record<any, any>): any {
       app.allowList = allowList
+      return this
+    },
+    fixReactEvent: function (needFix = false): any {
+      app.fixReactEvent = needFix
       return this
     }
   }

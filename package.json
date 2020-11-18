@@ -1,6 +1,6 @@
 {
   "name": "sfmic",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "micro frontend",
   "main": "dist/sfmic.js",
   "module": "dist/sfmic.esm.js",

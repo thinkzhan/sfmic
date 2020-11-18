@@ -1,4 +1,5 @@
 import type { App } from './types'
+import retargetEvents from './retargetEvents'
 
 export function loadShadowDOM(
   app: App,
@@ -19,6 +20,10 @@ export function loadShadowDOM(
           .map((k) => {
             app.host!.insertBefore(k, app.host!.firstChild)
           })
+        // hack:react17以下合成事件不兼容shadowdom
+        if (app.fixReactEvent) {
+          retargetEvents(app.host)
+        }
         resolve(app.host)
       }
     }
